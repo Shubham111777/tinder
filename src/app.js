@@ -1,17 +1,16 @@
 const express = require("express");
 const app = express();
 
-app.use("/user",[ (req, res,next) => {
-  console.log("route111")
-  next();
-  res.send("route1");
-},(req, res)=>{
-console.log("route2222")
-  res.send("route2");
+const { adminAuth,userAuth } = require("./middleware/auth.js");
 
+app.use("/admin", adminAuth);
 
-}]);
-
-app.listen(8080 , () => {
+app.get("/user",userAuth, (req, res) => {
+  res.send("get all user");
+});
+app.delete("/user/deleteUser", (req, res) => {
+  res.send("user deleted");
+});
+app.listen(8080, () => {
   console.log("Server is running on port 8080");
 });
